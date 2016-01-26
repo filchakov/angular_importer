@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/file', 'ImportController@parseFile');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
