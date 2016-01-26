@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var parserApp = angular.module('parserApp', ['ngRoute', 'ngResource', 'parserApp.controllers', 'parserApp.services', 'angularFileUpload', 'ngAnimate']);
+var parserApp = angular.module('parserApp', ['ngRoute', 'ngResource', 'ngStorage', 'parserApp.controllers', 'parserApp.services', 'angularFileUpload', 'ngAnimate']);
 
 parserApp.constant('path', 'partials/');
 
@@ -18,7 +18,7 @@ parserApp.config(['$routeProvider','path' ,
             }).
             when('/mapping', {
                 templateUrl: function($route){
-                    return path + 'pages/dashboard.html';
+                    return path + 'second.html';
                 },
                 controller: 'ClientListCtrl'
             }).

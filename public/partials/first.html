@@ -1,23 +1,23 @@
 <form role="form">
   <div class="form-group">
     <label for="password">Password:</label>
-    <input type="email" name="password" class="form-control" id="password">
+    <input type="text" ng-model="$storage.defaultPassword" name="password" class="form-control" id="password">
   </div>
   <div class="form-group">
     <label for="status">Status:</label>
-    <select class="form-control" id="status">
+    <select class="form-control" id="status" ng-model="$storage.defaultStatus">
         <option value="active">Active</option>
         <option value="deactive">Deactive</option>
     </select>
   </div>
   
-  <span class="btn btn-default btn-file" ng-hide="uploader.queue.length">
+  <span class="btn btn-default btn-file" ng-hide="$storage.uploader.queue.length">
     Download file <input type="file" name="file" accept=".csv,.txt,.xls" nv-file-select uploader="uploader"/>
   </span>
-  <br/>
   
- 
-  <table class="table animate-show" ng-show="uploader.queue.length">
+</form>
+<br/>  
+<table class="table animate-show" ng-show="uploader.queue.length">
       <thead>
           <tr>
               <th width="50%">Name</th>
@@ -54,6 +54,11 @@
               </td>
           </tr>
       </tbody>
-  </table>
-  
-</form>
+</table>
+
+<div class="alert alert-danger fade in" ng-show="showError">
+  <span href="#" ng-click="toggleShowError()" class="close" data-dismiss="alert" aria-label="close">&times;</span>
+  <strong>Danger!</strong> {{errorText}}
+</div>
+
+<span ng-click="goToMaping($event)" ng-show="showMappingBtn" data-href="/#/mapping" class="btn btn-primary btn-block btn-lg">Mapping</span>

@@ -2,75 +2,47 @@
 
 /* Controllers */
 
-var parserAppController = angular.module('parserApp.controllers', []);
+var parserAppController = angular.module('parserApp.controllers', ['parserApp.services']);
 
 
-parserAppController.controller('ClientListCtrl', ['$scope', '$routeParams', function($scope, $routeParams){
+parserAppController.controller('ClientListCtrl', ['$scope', '$routeParams', '$localStorage', '$sessionStorage', 'state', function($scope, $routeParams, $localStorage, $sessionStorage, state){
     
-    $scope.category = $routeParams.category;
+    $scope.ok = 'all ok';
+    $scope.data = state.data;
 
 }]);
 
+parserAppController.controller('FileCtrl', ['$scope', '$routeParams', 'FileUploader', '$localStorage', '$sessionStorage', 'state', function($scope, $routeParams, FileUploader, $localStorage, $sessionStorage, state){
+    
 
-parserAppController.controller('FileCtrl', ['$scope', '$routeParams', 'FileUploader', function($scope, $routeParams, FileUploader){
-    $scope.data = [{
-        file: 'csv',
-        data: [
-            ['first name1', 'email@email.com', 'last name'],
-            ['first name2', 'email@email.com', 'last name'],
-            ['first name3', 'email@email.com', 'last name'],
-            ['first name4', 'email@email.com', 'last name'],
-        ]
-    }];
+    $scope.$storage = $localStorage.$default({
+          showError: false,
+          showMappingBtn: false,
+    });
+
+    $scope.toggleShowError = function(){
+        $scope.$storage.showError = !$scope.$storage.showError;
+    }
+
+    $scope.goToMaping = function(obj){
+        window.location = obj.target.getAttribute("data-href");
+    }
+
+
     var uploader = $scope.uploader = new FileUploader({
             url: '/file'
-        });
+    });
 
-        // FILTERS
+    uploader.onCompleteItem = function(fileItem, response, status, headers) {
+        
+        if(status!=200){
+            $scope.showError = true;
+            $scope.errorText = response.error;
+        } else {
+            $scope.showMappingBtn = true;
+            state.data = response;
+        }
 
-        uploader.filters.push({
-            name: 'customFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options) {
-                return this.queue.length < 10;
-            }
-        });
-
-        // CALLBACKS
-
-        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-        uploader.onAfterAddingFile = function(fileItem) {
-            console.info('onAfterAddingFile', fileItem);
-        };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
-        uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
-        };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
-        };
-        uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
-        };
-
-        console.info('uploader', uploader);
+    };
 
 }])
