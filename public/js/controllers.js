@@ -5,23 +5,50 @@
 var parserAppController = angular.module('parserApp.controllers', ['parserApp.services']);
 
 
-parserAppController.controller('ClientListCtrl', ['$scope', '$routeParams', '$localStorage', '$sessionStorage', 'state', function($scope, $routeParams, $localStorage, $sessionStorage, state){
+parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', function($scope, $http, state){
     
-    $scope.ok = 'all ok';
-    $scope.data = state.data;
+    $scope.cacheForm = state.cacheForm;
+    $scope.response = state.response;
+
+    if($scope.response == undefined){
+        window.location = '/';
+    }
+
+    $scope.validate = function(){
+        $http.post('/validate', {
+            mapping: $scope.response.mapping, 
+            file: $scope.response.file, 
+            defaultValue: $scope.cacheForm}
+        ).then(function(response){
+            window.location = '/#/preview';
+        }, function(response){
+            alert(response.data.error);
+        });
+    }
+
+    $scope.import = function(){
+        $http.post('/import', {
+            mapping: $scope.response.mapping, 
+            file: $scope.response.file, 
+            defaultValue: $scope.cacheForm}
+        ).then(function(response){
+            window.location = '/#/success';
+        }, function(response){
+            alert(response.data.error);
+        });
+    }
 
 }]);
 
-parserAppController.controller('FileCtrl', ['$scope', '$routeParams', 'FileUploader', '$localStorage', '$sessionStorage', 'state', function($scope, $routeParams, FileUploader, $localStorage, $sessionStorage, state){
+parserAppController.controller('FileCtrl', ['$scope', 'FileUploader', 'state', function($scope, FileUploader, state){
     
+    $scope.cacheForm = state.cacheForm;
 
-    $scope.$storage = $localStorage.$default({
-          showError: false,
-          showMappingBtn: false,
-    });
+    $scope.showError = false;
+    $scope.showMappingBtn = false;
 
     $scope.toggleShowError = function(){
-        $scope.$storage.showError = !$scope.$storage.showError;
+        $scope.showError = !$scope.showError;
     }
 
     $scope.goToMaping = function(obj){
@@ -40,9 +67,9 @@ parserAppController.controller('FileCtrl', ['$scope', '$routeParams', 'FileUploa
             $scope.errorText = response.error;
         } else {
             $scope.showMappingBtn = true;
-            state.data = response;
+            state.response = response;
         }
 
     };
-
+    
 }])

@@ -9,7 +9,6 @@
     
     
     <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
     <style type="text/css">
         .btn-file {
             position: relative;
@@ -33,19 +32,23 @@
     </style>
 </head>
     <body ng-app="parserApp">
-        <div class="container">
-            <div class="header clearfix"> 
-                <h3 class="text-muted">Test task upload price</h3> 
+        
+        <div id="wrapper">
+            <div class="container">
+                <div class="header clearfix"> 
+                    <h3 class="text-muted">Test task upload users list</h3> 
+                </div>
+
+                <div ng-view></div>
+
             </div>
-
-            <div ng-view></div>
-
         </div>
-    </body>
+        
     <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
-
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
+
+    </body>
 
 </html>

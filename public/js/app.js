@@ -24,9 +24,14 @@ parserApp.config(['$routeProvider','path' ,
             }).
             when('/preview', {
                 templateUrl: function($route){
-                    return path + 'pages/dashboard.html';
+                    return path + 'three.html';
                 },
                 controller: 'ClientListCtrl'
+            }).
+            when('/success', {
+                templateUrl: function($route){
+                    return path + 'success.html';
+                }
             }).
             otherwise({
                 redirectTo: '/'

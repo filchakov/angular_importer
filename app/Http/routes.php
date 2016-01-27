@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ImportController@index');
 
 Route::post('/file', 'ImportController@parseFile');
+Route::post('/validate', 'ImportController@validateMapping');
+Route::post('/import', 'ImportController@import');
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +27,3 @@ Route::post('/file', 'ImportController@parseFile');
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-    //
-});
