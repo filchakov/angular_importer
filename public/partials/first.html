@@ -6,14 +6,14 @@
   <div class="form-group">
     <label for="status">Status:</label>
     <select class="form-control" id="status" ng-model="cacheForm.status">
-        <option value="active">Active</option>
+        <option value="active" selected="selected">Active</option>
         <option value="suspended">Suspended</option>
         <option value="deactive">Deactive</option>
     </select>
   </div>
   
   <span class="btn btn-file btn-success btn-block btn-lg ng-scope" ng-show="!uploader.queue.length">
-    Download file <input type="file" name="file" accept=".csv,.txt,.xls,.xlsx" nv-file-select uploader="uploader"/>
+    Upload <input type="file" name="file" accept=".csv,.txt,.xls,.xlsx" nv-file-select uploader="uploader"/>
   </span>
   
 </form>

@@ -9,21 +9,23 @@ parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', fu
     
     $scope.cacheForm = state.cacheForm;
     $scope.response = state.response;
+    
+    if($scope.response){
+        $scope.count_colspan = Object.keys(state.response.table_header).length;
+    } else {
+        $scope.count_colspan = 0;
+    }
 
     if($scope.response == undefined){
         window.location = '/';
     }
 
     $scope.validate = function(){
-        $http.post('/validate', {
-            mapping: $scope.response.mapping, 
-            file: $scope.response.file, 
-            defaultValue: $scope.cacheForm}
-        ).then(function(response){
+        if(!$scope.cacheForm.password){
+            alert("You did not fill in the password field");
+        } else {
             window.location = '/#/preview';
-        }, function(response){
-            alert(response.data.error);
-        });
+        }
     }
 
     $scope.import = function(){
@@ -43,7 +45,7 @@ parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', fu
 parserAppController.controller('FileCtrl', ['$scope', 'FileUploader', 'state', function($scope, FileUploader, state){
     
     $scope.cacheForm = state.cacheForm;
-
+    $scope.cacheForm.status = $scope.cacheForm.status||'active';
     $scope.showError = false;
     $scope.showMappingBtn = false;
 

@@ -20,6 +20,7 @@ class ImportController extends Controller
     }
 
     public function import(){
+
         $config = \Config::get('user_import');
 
         try {
@@ -30,22 +31,6 @@ class ImportController extends Controller
             foreach ($response['items'] as $key => $value) {
                 $response['status'] = UserImport::create($value)->save();
             }
-
-        } catch(\Exception $e) {
-            $response = ["error" => $e->getMessage()];
-            $statusCode = 400;
-        } finally {
-            return \Response::json($response, $statusCode);
-        }
-    }
-
-    public function validateMapping(){
-        $config = \Config::get('user_import');
-
-        try {
-            $inputData = Input::all();
-            $statusCode = 200;
-            $response['items'] = UserImport::getFile($inputData);            
 
         } catch(\Exception $e) {
             $response = ["error" => $e->getMessage()];
@@ -77,7 +62,7 @@ class ImportController extends Controller
             ];
 
         } catch(\Exception $e) {
-            $response = ["error" => $e->getMessage()];
+            $response = ["error" => 'File invalid'];
             $statusCode = 400;
         } finally {
             return \Response::json($response, $statusCode);

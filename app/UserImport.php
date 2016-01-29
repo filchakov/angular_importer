@@ -14,7 +14,7 @@ class UserImport extends Model
     static public function getFile($inputData = array()){
         $config = \Config::get('user_import');
         
-        $excel = Excel::load($config['path_price'].$inputData['file'], function($reader){})->get()->toArray();
+        $excel = Excel::load($config['path_price'].$inputData['file'], function($reader){$reader->noHeading();})->get()->toArray();
         
         $dataImport = UserImport::formaterDataFile($excel, $inputData['file']);
 
@@ -22,16 +22,16 @@ class UserImport extends Model
                 
                 $new_value = array();
                 foreach ($inputData['mapping'] as $key_mapping => $mappingValue) {
-                    
-                    if(!isset($value[$key_mapping])){
+                    if(in_array($mappingValue, $config['required']) && (empty($value[$key_mapping]) && empty($inputData['defaultValue'][$mappingValue])) ){
                         throw new \Exception("You did not fill the required field: ".$config['table_header'][$mappingValue] . ', '.($key+1).' line' , 1);
                     }
-
-                    $new_value[$mappingValue] = ($value[$key_mapping])?: $inputData['defaultValue'][$mappingValue];
+                    $new_value[$mappingValue] = (isset($value[$key_mapping]))? $value[$key_mapping] : ((!empty($inputData['defaultValue'][$mappingValue]))? $inputData['defaultValue'][$mappingValue] : '');
                 }
 
                 $dataImport[$key] = $new_value;
             }
+
+            echo json_encode($dataImport);die;
 
 
         return $dataImport;
@@ -51,7 +51,7 @@ class UserImport extends Model
 
         $r->file('file')->move($config['path_price'], $result['file']);
 
-        $excel = Excel::load($config['path_price'].$result['file'], function($reader){})->get()->toArray();
+        $excel = Excel::load($config['path_price'].$result['file'], function($reader){$reader->noHeading();})->get()->toArray();
 
 
         $result['items'] = UserImport::formaterDataFile($excel, $generateName);

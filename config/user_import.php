@@ -21,7 +21,6 @@ return [
         'country' => 'Country',
         'city' => 'City',
         'address' => 'Address',
-        'status' => 'Status',
         'password' => 'Password'
     ],
     'default_maping' => [
@@ -31,8 +30,8 @@ return [
         3 => 'country',
         4 => 'city',
         5 => 'address',
-        6 => 'status',
-        7 => 'password',
-    ]
+        6 => 'password',
+    ],
+    'required' => ['firstname', 'lastname', 'email', 'status', 'password']
 
 ];

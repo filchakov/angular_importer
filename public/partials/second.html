@@ -1,12 +1,13 @@
 <form role="form">
-
     <div class="row show-grid">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group input-group">
-                <span class="input-group-addon">Email</span>
-                <input type="text" ng-model="cacheForm.email" class="form-control" tabindex="1">
+                <span class="input-group-addon">Password</span>
+                <input type="text" class="form-control" ng-model="cacheForm.password" tabindex="5">
             </div>
+        </div>
 
+        <div class="col-md-6">
             <div class="form-group input-group">
                 <span class="input-group-addon">Status</span>
                 <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4">
@@ -15,30 +16,9 @@
                     <option value="deactive">Deactive</option>
                 </select>
             </div>
-
-        </div>
-        <div class="col-md-4">
-            <div class="form-group input-group">
-                <span class="input-group-addon">Country</span>
-                <input type="text" class="form-control" ng-model="cacheForm.country" tabindex="2">
-            </div>
-            <div class="form-group input-group">
-                <span class="input-group-addon">Password</span>
-                <input type="text" class="form-control" ng-model="cacheForm.password" tabindex="5">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group input-group">
-                <span class="input-group-addon">Address</span>
-                <input type="text" class="form-control" ng-model="cacheForm.address" tabindex="3">
-            </div>
-            <div class="form-group input-group">
-                <span class="input-group-addon">City</span>
-                <input type="text" class="form-control" ng-model="cacheForm.city" tabindex="6">
-            </div>
+            
         </div>
     </div>
-
 </form>
 
 <hr/>
@@ -60,11 +40,11 @@
           <span ng-if="!col.length">{{cacheForm[response.mapping[$index]]}}</span> 
         </td>
     </tr>
-    <tr ng-show="$storage.total_row > 10 && $storage.items.length >= 3">
-        <td colspan="{{$storage.table_header.length}}" > . . . </td>
+    <tr ng-show="response.total_row > 10 && response.items.length >= 3">
+        <td colspan="{{count_colspan}}" > . . . </td>
     </tr>
 </tbody>
 </table>​
 <hr/>
 <a href="/#/" class="btn btn-default">Back</a>
-<span class="btn btn-default pull-right" ng-click="validate()">Next</span>
+<span class="btn btn-default pull-right" ng-click="validate()">Preview</span>
