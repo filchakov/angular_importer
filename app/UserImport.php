@@ -25,13 +25,11 @@ class UserImport extends Model
                     if(in_array($mappingValue, $config['required']) && (empty($value[$key_mapping]) && empty($inputData['defaultValue'][$mappingValue])) ){
                         throw new \Exception("You did not fill the required field: ".$config['table_header'][$mappingValue] . ', '.($key+1).' line' , 1);
                     }
-                    $new_value[$mappingValue] = (isset($value[$key_mapping]))? $value[$key_mapping] : ((!empty($inputData['defaultValue'][$mappingValue]))? $inputData['defaultValue'][$mappingValue] : '');
+                    $new_value[$mappingValue] = (!empty($value[$key_mapping]))? $value[$key_mapping] : ((!empty($inputData['defaultValue'][$mappingValue]))? $inputData['defaultValue'][$mappingValue] : '');
                 }
 
                 $dataImport[$key] = $new_value;
             }
-
-            echo json_encode($dataImport);die;
 
 
         return $dataImport;

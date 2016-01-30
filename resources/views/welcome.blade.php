@@ -46,6 +46,7 @@
         
     <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
 

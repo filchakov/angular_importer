@@ -5,11 +5,17 @@
 var parserAppController = angular.module('parserApp.controllers', ['parserApp.services']);
 
 
-parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', function($scope, $http, state){
-    
+parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', 'config', 'operation', function($scope, $http, state, config, operation){
     $scope.cacheForm = state.cacheForm;
+    $scope.statusDefault = config.status;
     $scope.response = state.response;
     
+    $scope.response.old_mapping = JSON.parse(JSON.stringify($scope.response.mapping));
+
+    if(operation == 'preview'){
+        $scope.onlyRead = true;
+    }
+
     if($scope.response){
         $scope.count_colspan = Object.keys(state.response.table_header).length;
     } else {
@@ -28,6 +34,18 @@ parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', fu
         }
     }
 
+    $scope.changeField = function(new_value, old_value){
+
+        var for_clone = $scope.response.old_mapping.map(function(key){ return key;}).indexOf(old_value);
+
+        var for_replace = $scope.response.mapping.map(function(key, i){ return (i != for_clone && key == new_value);}).indexOf(true);
+
+        $scope.response.mapping[for_replace] = $scope.response.old_mapping[for_clone];
+        
+        $scope.response.old_mapping = JSON.parse(JSON.stringify($scope.response.mapping));
+
+    }
+
     $scope.import = function(){
         $http.post('/import', {
             mapping: $scope.response.mapping, 
@@ -42,9 +60,10 @@ parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', fu
 
 }]);
 
-parserAppController.controller('FileCtrl', ['$scope', 'FileUploader', 'state', function($scope, FileUploader, state){
+parserAppController.controller('FileCtrl', ['$scope', 'FileUploader', 'state', 'config', function($scope, FileUploader, state, config){
     
     $scope.cacheForm = state.cacheForm;
+    $scope.statusDefault = config.status;
     $scope.cacheForm.status = $scope.cacheForm.status||'active';
     $scope.showError = false;
     $scope.showMappingBtn = false;

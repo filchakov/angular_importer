@@ -10,10 +10,7 @@
         <div class="col-md-6">
             <div class="form-group input-group">
                 <span class="input-group-addon">Status</span>
-                <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4">
-                    <option value="active">Active</option>
-                    <option value="suspended">Suspended</option>
-                    <option value="deactive">Deactive</option>
+                <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4" ng-options="item.name as item.value for item in statusDefault">
                 </select>
             </div>
             
@@ -27,7 +24,7 @@
 <thead>
     <tr>
         <th ng-repeat="table_head in response.table_header">
-              <select class="form-control" id="status" ng-model="response.mapping[$index]">
+              <select class="form-control" id="status" ng-model="response.mapping[$index]" ng-change="changeField(response.mapping[$index], response.old_mapping[$index])">
                     <option ng-repeat="(key, table_head) in response.table_header" value="{{key}}">{{table_head}}</option>
               </select>
         </th>

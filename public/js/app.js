@@ -4,33 +4,46 @@
 
 var parserApp = angular.module('parserApp', ['ngRoute', 'ngResource', 'ngStorage', 'parserApp.controllers', 'parserApp.services', 'angularFileUpload', 'ngAnimate']);
 
-parserApp.constant('path', 'partials/');
+parserApp.constant('config', {
+    'path':'partials/',
+    'status': [
+        {'name':'active', 'value':'Active'},
+        {'name':'suspended', 'value':'Suspended'},
+        {'name':'deactive', 'value':'Deactive'},
+    ]
+});
 
-parserApp.config(['$routeProvider','path' ,
-    function($routeProvider, path) {
+parserApp.config(['$routeProvider','config' ,
+    function($routeProvider, config) {
 
         $routeProvider.
             when('/', {
                 templateUrl: function($route){
-                    return path + 'first.html';
+                    return config.path + 'first.html';
                 },
                 controller: 'FileCtrl'
             }).
             when('/mapping', {
                 templateUrl: function($route){
-                    return path + 'second.html';
+                    return config.path + 'second.html';
+                },
+                resolve: {
+                    operation: function(){return "mapping";}
                 },
                 controller: 'ClientListCtrl'
             }).
             when('/preview', {
                 templateUrl: function($route){
-                    return path + 'three.html';
+                    return config.path + 'three.html';
+                },
+                resolve: {
+                    operation: function(){return "preview";}
                 },
                 controller: 'ClientListCtrl'
             }).
             when('/success', {
                 templateUrl: function($route){
-                    return path + 'success.html';
+                    return config.path + 'success.html';
                 }
             }).
             otherwise({

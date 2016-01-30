@@ -1,3 +1,22 @@
+<form role="form">
+    <div class="row show-grid">
+        <div class="col-md-6">
+            <div class="form-group input-group">
+                <span class="input-group-addon">Password</span>
+                <input type="text" class="form-control" ng-model="cacheForm.password" tabindex="5" ng-disabled="onlyRead">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group input-group">
+                <span class="input-group-addon">Status</span>
+                <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4" ng-options="item.name as item.value for item in statusDefault" ng-disabled="onlyRead">
+                </select>
+            </div>
+            
+        </div>
+    </div>
+</form>
 
 <hr/>
 

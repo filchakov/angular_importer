@@ -5,14 +5,11 @@
   </div>
   <div class="form-group">
     <label for="status">Status:</label>
-    <select class="form-control" id="status" ng-model="cacheForm.status">
-        <option value="active" selected="selected">Active</option>
-        <option value="suspended">Suspended</option>
-        <option value="deactive">Deactive</option>
+    <select class="form-control" id="status" ng-model="cacheForm.status" ng-options="item.name as item.value for item in statusDefault">
     </select>
   </div>
   
-  <span class="btn btn-file btn-success btn-block btn-lg ng-scope" ng-show="!uploader.queue.length">
+  <span class="btn btn-file btn-success ng-scope" ng-show="!uploader.queue.length">
     Upload <input type="file" name="file" accept=".csv,.txt,.xls,.xlsx" nv-file-select uploader="uploader"/>
   </span>
   
@@ -62,4 +59,4 @@
   <strong>Error!</strong> {{errorText}}
 </div>
 
-<span ng-click="goToMaping($event)" ng-show="showMappingBtn && uploader.queue.length" data-href="/#/mapping" class="btn btn-primary btn-block btn-lg">Mapping</span>
+<span ng-click="goToMaping($event)" ng-show="showMappingBtn && uploader.queue.length" data-href="/#/mapping" class="btn btn-primary">Mapping</span>
