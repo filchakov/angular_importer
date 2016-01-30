@@ -18,12 +18,12 @@ function checkLimitCountInRow(&$array = array()){
     return true;
 }
 
-function checkCountColspan($type = '', $array = array()){
+function checkCountColspan($type = '', $array = array(), $delimiter = ';'){
     $result = array();
     
     switch ($type) {
         case 'txt':
-            $result = explode(\Config::get('user_import.csv_split'), array_shift($array));
+            $result = explode($delimiter, array_shift($array));
             break;
         
         case 'xls':
@@ -35,4 +35,24 @@ function checkCountColspan($type = '', $array = array()){
     $result = array_merge($result, $additional_colspan);
 
     return $result;
+}
+
+function detectedDelimiter($string = ''){
+    $probable_delimiters = \Config::get('user_import.csv_split');
+
+    $delimiter_count_array = array(); 
+
+    foreach ($probable_delimiters as $probable_delimiter) {
+        $probable_delimiter_count = substr_count($string, $probable_delimiter);
+        $delimiter_count_array[$probable_delimiter] = $probable_delimiter_count;
+    }
+
+    $max_value = max($delimiter_count_array);
+    $determined_delimiter_array = array_keys($delimiter_count_array, max($delimiter_count_array));
+    
+    while( $element = each( $determined_delimiter_array ) ){
+        $determined_delimiter_count = $element['key'];
+        $determined_delimiter = $element['value'];
+    }
+    return $determined_delimiter;
 }

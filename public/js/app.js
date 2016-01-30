@@ -21,23 +21,17 @@ parserApp.config(['$routeProvider','config' ,
                 templateUrl: function($route){
                     return config.path + 'first.html';
                 },
-                controller: 'FileCtrl'
+                controller: 'FirstPageCtrl'
             }).
             when('/mapping', {
                 templateUrl: function($route){
                     return config.path + 'second.html';
                 },
-                resolve: {
-                    operation: function(){return "mapping";}
-                },
                 controller: 'ClientListCtrl'
             }).
             when('/preview', {
                 templateUrl: function($route){
-                    return config.path + 'three.html';
-                },
-                resolve: {
-                    operation: function(){return "preview";}
+                    return config.path + 'third.html';
                 },
                 controller: 'ClientListCtrl'
             }).

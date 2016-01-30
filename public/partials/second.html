@@ -1,16 +1,16 @@
-<form role="form">
+<form id="defaultValue" role="form" name="defaultValue" action="/#/preview" method="GET">
     <div class="row show-grid">
         <div class="col-md-6">
             <div class="form-group input-group">
                 <span class="input-group-addon">Password</span>
-                <input type="text" class="form-control" ng-model="cacheForm.password" tabindex="5">
+                <input type="text" class="form-control" ng-model="cacheForm.password" tabindex="5" required>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-group input-group">
                 <span class="input-group-addon">Status</span>
-                <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4" ng-options="item.name as item.value for item in statusDefault">
+                <select class="form-control" id="status" ng-model="cacheForm.status" tabindex="4" ng-options="item.name as item.value for item in statusDefault" required>
                 </select>
             </div>
             
@@ -23,9 +23,9 @@
 <table class="table table-bordered table-striped">
 <thead>
     <tr>
-        <th ng-repeat="table_head in response.table_header">
-              <select class="form-control" id="status" ng-model="response.mapping[$index]" ng-change="changeField(response.mapping[$index], response.old_mapping[$index])">
-                    <option ng-repeat="(key, table_head) in response.table_header" value="{{key}}">{{table_head}}</option>
+        <th ng-repeat="tableHead in response.tableHeader">
+              <select class="form-control" id="status" ng-model="response.mapping[$index]" ng-change="changeField(response.mapping[$index], response.oldMapping[$index])">
+                    <option ng-repeat="(key, tableHead) in response.tableHeader" value="{{key}}">{{tableHead}}</option>
               </select>
         </th>
     </tr>
@@ -37,11 +37,12 @@
           <span ng-if="!col.length">{{cacheForm[response.mapping[$index]]}}</span> 
         </td>
     </tr>
-    <tr ng-show="response.total_row > 10 && response.items.length >= 3">
-        <td colspan="{{count_colspan}}" > . . . </td>
+    <tr ng-show="$storage.items.length >= 3 && $storage.items.length < 10">
+        <td colspan="{{countColspan}}" > . . . </td>
     </tr>
 </tbody>
 </table>​
 <hr/>
 <a href="/#/" class="btn btn-default">Back</a>
-<span class="btn btn-default pull-right" ng-click="validate()">Preview</span>
+
+<input class="btn btn-default pull-right" type="submit" form="defaultValue" value="Preview"/>

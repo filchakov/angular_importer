@@ -1,0 +1,35 @@
+    
+
+<div class="panel panel-info">
+                        <div class="panel-heading">
+                            Default values
+                        </div>
+                        <div class="panel-body">
+                            <p><b>Password</b> - {{cacheForm.password}}</p>
+                            <p><b>Status</b> - {{cacheForm.status}}</p>
+                        </div>
+</div>
+
+<hr/>
+
+<table class="table table-bordered table-striped">
+<thead>
+    <tr>
+        <th class="text-center" ng-repeat="tableHead in response.tableHeader">{{response.tableHeader[response.mapping[$index]]}}</th>
+    </tr>
+</thead>
+<tbody data-provides="rowlink" class="text-center">
+    <tr ng-repeat="(key, row) in response.items">
+        <td ng-repeat="col in response.items[key] track by $index">
+          <span ng-if="col.length">{{col}}</span>
+          <span ng-if="!col.length">{{cacheForm[response.mapping[$index]]}}</span> 
+        </td>
+    </tr>
+    <tr ng-show="$storage.items.length >= 3 && $storage.items.length < 10">
+        <td colspan="{{$storage.tableHeader.length}}" > . . . </td>
+    </tr>
+</tbody>
+</table>​
+<hr/>
+<a href="/#/mapping" class="btn btn-default">Back</a>
+<span class="btn btn-default pull-right" ng-click="import()">Apply</span>

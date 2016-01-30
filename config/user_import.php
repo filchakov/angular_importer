@@ -8,7 +8,7 @@ return [
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ],
     'csv_extension' => ['txt','csv'],
-    'csv_split' => ';',
+    'csv_split' => [';',':','\t'],
     'count_colspan' => [
         'min' => 3,
         'max' => 5,

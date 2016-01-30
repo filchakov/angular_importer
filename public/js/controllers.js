@@ -5,45 +5,32 @@
 var parserAppController = angular.module('parserApp.controllers', ['parserApp.services']);
 
 
-parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', 'config', 'operation', function($scope, $http, state, config, operation){
+parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', 'config', function($scope, $http, state, config){
     $scope.cacheForm = state.cacheForm;
     $scope.statusDefault = config.status;
     $scope.response = state.response;
     
-    $scope.response.old_mapping = JSON.parse(JSON.stringify($scope.response.mapping));
-
-    if(operation == 'preview'){
-        $scope.onlyRead = true;
-    }
+    $scope.response.oldMapping = JSON.parse(JSON.stringify($scope.response.mapping));
 
     if($scope.response){
-        $scope.count_colspan = Object.keys(state.response.table_header).length;
+        $scope.countColspan = Object.keys(state.response.tableHeader).length;
     } else {
-        $scope.count_colspan = 0;
+        $scope.countColspan = 0;
     }
 
     if($scope.response == undefined){
         window.location = '/';
     }
 
-    $scope.validate = function(){
-        if(!$scope.cacheForm.password){
-            alert("You did not fill in the password field");
-        } else {
-            window.location = '/#/preview';
-        }
-    }
+    $scope.changeField = function(newValue, oldValue){
 
-    $scope.changeField = function(new_value, old_value){
+        var forClone = $scope.response.oldMapping.map(function(key){ return key;}).indexOf(oldValue);
 
-        var for_clone = $scope.response.old_mapping.map(function(key){ return key;}).indexOf(old_value);
+        var forReplace = $scope.response.mapping.map(function(key, i){ return (i != forClone && key == newValue);}).indexOf(true);
 
-        var for_replace = $scope.response.mapping.map(function(key, i){ return (i != for_clone && key == new_value);}).indexOf(true);
-
-        $scope.response.mapping[for_replace] = $scope.response.old_mapping[for_clone];
+        $scope.response.mapping[forReplace] = $scope.response.oldMapping[forClone];
         
-        $scope.response.old_mapping = JSON.parse(JSON.stringify($scope.response.mapping));
-
+        $scope.response.oldMapping = JSON.parse(JSON.stringify($scope.response.mapping));
     }
 
     $scope.import = function(){
@@ -60,7 +47,7 @@ parserAppController.controller('ClientListCtrl', ['$scope', '$http', 'state', 'c
 
 }]);
 
-parserAppController.controller('FileCtrl', ['$scope', 'FileUploader', 'state', 'config', function($scope, FileUploader, state, config){
+parserAppController.controller('FirstPageCtrl', ['$scope', 'FileUploader', 'state', 'config', function($scope, FileUploader, state, config){
     
     $scope.cacheForm = state.cacheForm;
     $scope.statusDefault = config.status;

@@ -54,10 +54,9 @@ class ImportController extends Controller
             $parse = UserImport::parseFileImport($r);
 
             $response = [
-              'items' => (count($parse['items']) > 10)? array_slice($parse['items'], 0, 3) : $parse['items'],
+              'items' => $parse['items'],
               'file' => $parse['file'],
-              'total_row' => count($parse['items']),
-              'table_header' => $config['table_header'],
+              'tableHeader' => $config['table_header'],
               'mapping' => $config['default_maping']
             ];
 

@@ -49,8 +49,16 @@ class UserImport extends Model
 
         $r->file('file')->move($config['path_price'], $result['file']);
 
-        $excel = Excel::load($config['path_price'].$result['file'], function($reader){$reader->noHeading();})->get()->toArray();
+        //$delimiter
+        $excel = Excel::load($config['path_price'].$result['file'], function($reader){
+            $reader->noHeading();
+        });
 
+        if($excel->getTotalRowsOfFile() > 10){
+            $excel = $excel->take(3)->get()->toArray();
+        } else {
+            $excel = $excel->get()->toArray();
+        }
 
         $result['items'] = UserImport::formaterDataFile($excel, $generateName);
         
@@ -65,8 +73,9 @@ class UserImport extends Model
 
         if(in_array(pathinfo($fileName)['extension'], $config['csv_extension'])){
             //txt, csv
+            $delimiter = detectedDelimiter($excel[0][0]);
             foreach ($excel as $key => $value) {
-                $result[] = checkCountColspan('txt', $value);
+                $result[] = checkCountColspan('txt', $value, $delimiter);
             }
         } else {
             //xls
