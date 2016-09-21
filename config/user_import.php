@@ -1,27 +1,28 @@
-<?php 
+<?php
+
 return [
-    'path_price' => storage_path().'/price_tmp/',
+    'path_price'       => storage_path().'/price_tmp/',
     'valide_mime_type' => [
         'text/csv',
         'application/vnd.ms-excel',
         'text/plain',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ],
-    'csv_extension' => ['txt','csv'],
-    'csv_split' => [';',':','\t'],
+    'csv_extension' => ['txt', 'csv'],
+    'csv_split'     => [';', ':', '\t'],
     'count_colspan' => [
-        'min' => 3,
-        'max' => 5,
-        'error_text' => 'Invalid import file, a minimum of %d and a maximum of %d columns'
+        'min'        => 3,
+        'max'        => 5,
+        'error_text' => 'Invalid import file, a minimum of %d and a maximum of %d columns',
     ],
     'table_header' => [
         'firstname' => 'First name',
-        'lastname' => 'Last name',
-        'email' => 'Email',
-        'country' => 'Country',
-        'city' => 'City',
-        'address' => 'Address',
-        'password' => 'Password'
+        'lastname'  => 'Last name',
+        'email'     => 'Email',
+        'country'   => 'Country',
+        'city'      => 'City',
+        'address'   => 'Address',
+        'password'  => 'Password',
     ],
     'default_maping' => [
         0 => 'firstname',
@@ -32,6 +33,6 @@ return [
         5 => 'address',
         6 => 'password',
     ],
-    'required' => ['firstname', 'lastname', 'email', 'status', 'password']
+    'required' => ['firstname', 'lastname', 'email', 'status', 'password'],
 
 ];

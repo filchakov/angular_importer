@@ -11,67 +11,70 @@ class UserImport extends Model
 
     protected $fillable = ['firstname', 'lastname', 'email', 'country', 'city', 'address', 'status', 'password'];
 
-    static public function getFile($inputData = array()){
+    public static function getFile($inputData = [])
+    {
         $config = \Config::get('user_import');
-        
-        $excel = Excel::load($config['path_price'].$inputData['file'], function($reader){$reader->noHeading();})->get()->toArray();
-        
-        $dataImport = UserImport::formaterDataFile($excel, $inputData['file']);
+
+        $excel = Excel::load($config['path_price'].$inputData['file'], function ($reader) {
+            $reader->noHeading();
+        })->get()->toArray();
+
+        $dataImport = self::formaterDataFile($excel, $inputData['file']);
 
         foreach ($dataImport as $key => $value) {
-                
-                $new_value = array();
-                foreach ($inputData['mapping'] as $key_mapping => $mappingValue) {
-                    if(in_array($mappingValue, $config['required']) && (empty($value[$key_mapping]) && empty($inputData['defaultValue'][$mappingValue])) ){
-                        throw new \Exception("You did not fill the required field: ".$config['table_header'][$mappingValue] . ', '.($key+1).' line' , 1);
-                    }
-                    $new_value[$mappingValue] = (!empty($value[$key_mapping]))? $value[$key_mapping] : ((!empty($inputData['defaultValue'][$mappingValue]))? $inputData['defaultValue'][$mappingValue] : '');
+            $new_value = [];
+            foreach ($inputData['mapping'] as $key_mapping => $mappingValue) {
+                if (in_array($mappingValue, $config['required']) && (empty($value[$key_mapping]) && empty($inputData['defaultValue'][$mappingValue]))) {
+                    throw new \Exception('You did not fill the required field: '.$config['table_header'][$mappingValue].', '.($key + 1).' line', 1);
                 }
-
-                $dataImport[$key] = $new_value;
+                $new_value[$mappingValue] = (!empty($value[$key_mapping])) ? $value[$key_mapping] : ((!empty($inputData['defaultValue'][$mappingValue])) ? $inputData['defaultValue'][$mappingValue] : '');
             }
+
+            $dataImport[$key] = $new_value;
+        }
 
 
         return $dataImport;
     }
 
-    static public function parseFileImport(\Illuminate\Http\Request $r){
-        
-        $result = array(
+    public static function parseFileImport(\Illuminate\Http\Request $r)
+    {
+        $result = [
             'items' => '',
-            'file' => ''
-        );
+            'file'  => '',
+        ];
         $config = \Config::get('user_import');
-        
+
         $generateName = uniqid().'.'.$r->file('file')->getClientOriginalExtension();
-        
+
         $result['file'] = pathinfo($generateName)['basename'];
 
         $r->file('file')->move($config['path_price'], $result['file']);
 
         //$delimiter
-        $excel = Excel::load($config['path_price'].$result['file'], function($reader){
+        $excel = Excel::load($config['path_price'].$result['file'], function ($reader) {
             $reader->noHeading();
         });
 
-        if($excel->getTotalRowsOfFile() > 10){
+        if ($excel->getTotalRowsOfFile() > 10) {
             $excel = $excel->take(3)->get()->toArray();
         } else {
             $excel = $excel->get()->toArray();
         }
 
-        $result['items'] = UserImport::formaterDataFile($excel, $generateName);
-        
+        $result['items'] = self::formaterDataFile($excel, $generateName);
+
 
         return $result;
     }
 
-    static function formaterDataFile($excel = array(), $fileName){
-        $result = array();
+    public static function formaterDataFile($excel, $fileName)
+    {
+        $result = [];
 
         $config = \Config::get('user_import');
 
-        if(in_array(pathinfo($fileName)['extension'], $config['csv_extension'])){
+        if (in_array(pathinfo($fileName)['extension'], $config['csv_extension'])) {
             //txt, csv
             $delimiter = detectedDelimiter($excel[0][0]);
             foreach ($excel as $key => $value) {
@@ -83,6 +86,7 @@ class UserImport extends Model
                 $result[] = checkCountColspan('xls', $value);
             }
         }
+
         return $result;
     }
 }

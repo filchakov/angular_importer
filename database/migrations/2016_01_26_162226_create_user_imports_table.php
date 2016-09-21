@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUserImportsTable extends Migration
 {
@@ -20,7 +20,7 @@ class CreateUserImportsTable extends Migration
             $table->string('country', 255)->nullable();
             $table->string('city', 255)->nullable();
             $table->string('address', 255)->nullable();
-            $table->enum('status', ['active', 'suspended', 'disabled']);;
+            $table->enum('status', ['active', 'suspended', 'disabled']);
             $table->string('password', 255);
 
             $table->timestamps();
